@@ -1,7 +1,6 @@
-import { host } from "pg/lib/defaults";
-import { Sequelize} from "sequelize";
+import Sequelize from "sequelize";
 
-const sequelize = new Sequelize("auth-db", "postgres", "", {
+const sequelize = new Sequelize("auth-db", "admin", "12Aa3456", {
     host: "localhost",
     dialect: "postgres",
     quoteIdentifiers: false,
@@ -20,7 +19,7 @@ sequelize
         console.info("Connection has been established!");
     })
     .catch((err) => {
-        console.error("Unable to establish a connection!");
+        console.error("Unable to establish a connection to database!");
         console.error(err.message);
     });
 
