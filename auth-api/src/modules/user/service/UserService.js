@@ -1,5 +1,6 @@
-import UserRepository from "../repository/UserRepository";
-import * as httpStatus from "../../../config/constants/HttpStatus";
+import * as httpStatus from '../../../config/constants/HttpStatus.js';
+import UserException from '../Exceptions/UserException.js';
+import UserRepository from '../repository/UserRepository.js';
 
 class UserService {
 
@@ -7,10 +8,8 @@ class UserService {
         try {
             const { id } = req.params;
             this.validateRequestData(id);
-            let user = UserRepository.findById(req.id);
-            if (!user) {
-                return httpStatus.NOT_FOUND;
-            }
+            let user = await UserRepository.findById(id);
+            this.validateUserNotFound(user);
             return {
                 status: httpStatus.OK,
                 user: {
@@ -32,10 +31,8 @@ class UserService {
         try {
             const { email } = req.params;
             this.validateRequestData(email);
-            let user = UserRepository.findByEmail(req.email);
-            if (!user) {
-                return httpStatus.NOT_FOUND;
-            }
+            let user = await UserRepository.findByEmail(email);
+            this.validateUserNotFound(user);
             return {
                 status: httpStatus.OK,
                 user: {
@@ -55,7 +52,13 @@ class UserService {
 
     validateRequestData(data) {
         if (!data) {
-            throw new Error("User's data not informed!");
+            throw new UserException(httpStatus.BAD_REQUEST, "User's data not informed!");
+        }
+    }
+
+    validateUserNotFound(user) {
+        if (!user) {
+            throw new UserException(httpStatus.NOT_FOUND, "User not found!");
         }
     }
 

@@ -1,5 +1,6 @@
 import express from "express";
 import * as db from "./src/config/db/dummyData.js";
+import UserRoutes from "./src/modules/user/routes/UserRoutes.js";
 
 const app = express();
 const env = process.env;
@@ -14,6 +15,10 @@ app.get("/api/v1/status", (req, res) => {
         "httpStatus": 200
     });
 });
+
+app.use(express.json());
+
+app.use(UserRoutes);
 
 app.listen(PORT, () => {
     console.info(`auth-api successfully started on port ${PORT}!`);
