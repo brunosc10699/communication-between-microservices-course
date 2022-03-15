@@ -2,6 +2,11 @@ import UserService from "../service/UserService.js";
 
 class UserController {
 
+    async getAccessToken(req, res) {
+        const auth = await UserService.getAccessToken(req);
+        return res.status(auth.status).json(auth);
+    }
+
     async findById(req, res) {
         let user = await UserService.findById(req);
         return res.status(user.status).json(user);
