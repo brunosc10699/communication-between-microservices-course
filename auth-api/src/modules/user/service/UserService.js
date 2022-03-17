@@ -38,7 +38,7 @@ class UserService {
     async findById(req) {
         try {
             const { id } = req.params;
-            this.validateRequestData(id);
+            this.validateAuthenticatedUser(id, req);
             let user = await UserRepository.findById(id);
             this.validateUserNotFound(user);
             return {
@@ -61,7 +61,7 @@ class UserService {
     async findByEmail(req) {
         try {
             const { email } = req.params;
-            this.validateRequestData(email);
+            this.validateAuthenticatedUser(email, req);
             let user = await UserRepository.findByEmail(email);
             this.validateUserNotFound(user);
             return {
@@ -81,9 +81,9 @@ class UserService {
         }
     }
 
-    validateRequestData(data) {
-        if (!data) {
-            throw new UserException(httpStatus.BAD_REQUEST, "User's data not informed!");
+    validateAuthenticatedUser(userData, req) {
+        if (userData != req.authUser.email) {
+            throw new UserException(httpStatus.UNAUTHORIZED, "Unauthorized!");
         }
     }
 

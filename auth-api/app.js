@@ -10,12 +10,6 @@ const PORT = env.PORT || 8080;
 
 db.createInitialData();
 
-app.use(express.json());
-
-app.use(UserRoutes);
-
-app.use(CheckToken);
-
 app.get("/api/v1/status", (req, res) => {
     return res.status(200).json({
         "service": "Auth-API",
@@ -23,6 +17,10 @@ app.get("/api/v1/status", (req, res) => {
         "httpStatus": 200
     });
 });
+
+app.use(express.json());
+
+app.use(UserRoutes);
 
 app.listen(PORT, () => {
     console.info(`auth-api successfully started on port ${PORT}!`);
