@@ -20,7 +20,8 @@ class UserService {
                 name: user.name,
                 email: user.email
             };
-            const accessToken = jwt.sign({authUser}, secrets.API_SECRET, {expiresIn: "1d"});
+            const bearer = "bearer ";
+            const accessToken = bearer + jwt.sign({authUser}, secrets.API_SECRET, {expiresIn: "1d"});
             return {
                 status: httpStatus.OK,
                 accessToken
